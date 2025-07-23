@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, User, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface HeaderProps {
   isMenuOpen: boolean;
@@ -9,6 +10,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -54,12 +56,41 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex space-x-4">
-            <button className="text-gray-700 hover:text-amber-800 transition-colors font-medium px-4 py-2">
-              Log In
-            </button>
-            <button className="bg-amber-800 text-white hover:bg-amber-900 transition-colors font-medium px-6 py-2 rounded-lg">
-              Sign Up
-            </button>
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <User size={20} className="text-gray-600" />
+                  <span className="text-gray-700 font-medium">
+                    {user.firstName} {user.lastName}
+                  </span>
+                  <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded-full text-xs font-medium">
+                    {user.role}
+                  </span>
+                </div>
+                <button
+                  onClick={logout}
+                  className="flex items-center space-x-2 text-gray-700 hover:text-amber-800 transition-colors font-medium px-4 py-2"
+                >
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <>
+                <button 
+                  onClick={() => navigate('/login')}
+                  className="text-gray-700 hover:text-amber-800 transition-colors font-medium px-4 py-2"
+                >
+                  Log In
+                </button>
+                <button 
+                  onClick={() => navigate('/login')}
+                  className="bg-amber-800 text-white hover:bg-amber-900 transition-colors font-medium px-6 py-2 rounded-lg"
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -102,12 +133,41 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                 About Us
               </button>
               <div className="border-t pt-4 space-y-2">
-                <button className="block w-full text-left text-gray-700 hover:text-amber-800 transition-colors font-medium py-2">
-                  Log In
-                </button>
-                <button className="bg-amber-800 text-white hover:bg-amber-900 transition-colors font-medium px-6 py-2 rounded-lg w-full">
-                  Sign Up
-                </button>
+                {user ? (
+                  <>
+                    <div className="flex items-center space-x-2 py-2">
+                      <User size={16} className="text-gray-600" />
+                      <span className="text-gray-700 font-medium">
+                        {user.firstName} {user.lastName}
+                      </span>
+                      <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded-full text-xs font-medium">
+                        {user.role}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={logout}
+                      className="flex items-center space-x-2 w-full text-left text-gray-700 hover:text-amber-800 transition-colors font-medium py-2"
+                    >
+                      <LogOut size={16} />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      onClick={() => navigate('/login')}
+                      className="block w-full text-left text-gray-700 hover:text-amber-800 transition-colors font-medium py-2"
+                    >
+                      Log In
+                    </button>
+                    <button 
+                      onClick={() => navigate('/login')}
+                      className="bg-amber-800 text-white hover:bg-amber-900 transition-colors font-medium px-6 py-2 rounded-lg w-full"
+                    >
+                      Sign Up
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
