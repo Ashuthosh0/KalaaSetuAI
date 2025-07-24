@@ -20,6 +20,10 @@ import ArtistApplicationPage from './pages/artist/ArtistApplicationPage';
 import ApplicationStatusPage from './pages/artist/ApplicationStatusPage';
 import ModeratorDashboard from './pages/moderator/ModeratorDashboard';
 import UnauthorizedPage from './pages/UnauthorizedPage';
+import ClientDashboard from './pages/client/ClientDashboard';
+import ClientPostRequirement from './pages/client/ClientPostRequirement';
+import ClientRequirements from './pages/client/ClientRequirements';
+import ClientHires from './pages/client/ClientHires';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,6 +80,28 @@ function App() {
             <Route path="/moderator" element={
               <ProtectedRoute roles={['moderator']} requireVerification={true}>
                 <ModeratorDashboard />
+              </ProtectedRoute>
+            } />
+            
+            {/* Client Routes */}
+            <Route path="/client/dashboard" element={
+              <ProtectedRoute roles={['client']} requireVerification={true}>
+                <ClientDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/client/post-requirement" element={
+              <ProtectedRoute roles={['client']} requireVerification={true}>
+                <ClientPostRequirement />
+              </ProtectedRoute>
+            } />
+            <Route path="/client/requirements" element={
+              <ProtectedRoute roles={['client']} requireVerification={true}>
+                <ClientRequirements />
+              </ProtectedRoute>
+            } />
+            <Route path="/client/hires" element={
+              <ProtectedRoute roles={['client']} requireVerification={true}>
+                <ClientHires />
               </ProtectedRoute>
             } />
           </Routes>

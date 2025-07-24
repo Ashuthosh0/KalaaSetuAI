@@ -1,6 +1,8 @@
 import React from 'react';
 import { Star, MapPin, Clock, User } from 'lucide-react';
 import { Artist } from '../types';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 interface ArtistCardProps {
   artist: Artist;
@@ -9,6 +11,16 @@ interface ArtistCardProps {
 }
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onHire, onViewProfile }) => {
+  const handleHire = async () => {
+    try {
+      await axios.post(`/client/hire/${artist.id}`);
+      toast.success('Artist hired successfully!');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Failed to hire artist';
+      toast.error(message);
+    }
+  };
+
   const getAvailabilityColor = (availability: string) => {
     switch (availability) {
       case 'available': return 'bg-green-100 text-green-800';
@@ -86,6 +98,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onHire, onViewProfile }
           </button>
           <button
             onClick={() => onHire(artist.id)}
+          onClick={handleHire}
             className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200"
           >
             Hire Now
