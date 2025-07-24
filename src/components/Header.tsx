@@ -66,6 +66,7 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                   <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded-full text-xs font-medium">
                     {user.role}
                   </span>
+                  
                 </div>
                 <button
                   onClick={logout}

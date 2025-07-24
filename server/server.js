@@ -12,6 +12,7 @@ const connectDB = require('./config/database');
 const authRoutes = require('./routes/auth');
 const artistRoutes = require('./routes/artist');
 const moderatorRoutes = require('./routes/moderator');
+const clientRoutes = require('./routes/client');
 
 // Connect to database
 connectDB();
@@ -49,6 +50,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/artist', artistRoutes);
 app.use('/api/moderator', moderatorRoutes);
+app.use('/api/client', clientRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
