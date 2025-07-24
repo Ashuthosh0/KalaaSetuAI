@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
+const { sendOTPEmail } = require('../utils/emailService');
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -76,8 +77,13 @@ exports.register = async (req, res) => {
     const otp = user.generateOTP();
     await user.save();
 
-    // TODO: Send OTP via email/SMS
-    console.log(`OTP for ${email}: ${otp}`);
+    // Send OTP via email
+    try {
+      await sendOTPEmail(user.email, otp, user.firstName);
+    } catch (emailError) {
+      console.error('Failed to send OTP email:', emailError);
+      // Don't fail registration if email fails, but log it
+    }
 
     sendTokenResponse(user, 201, res, 'User registered successfully. Please verify your account with the OTP sent to your email.');
   } catch (error) {
@@ -256,8 +262,16 @@ exports.resendOTP = async (req, res) => {
     const otp = user.generateOTP();
     await user.save();
 
-    // TODO: Send OTP via email/SMS
-    console.log(`New OTP for ${user.email}: ${otp}`);
+    // Send OTP via email
+    try {
+      await sendOTPEmail(user.email, otp, user.firstName);
+    } catch (emailError) {
+      console.error('Failed to send OTP email:', emailError);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send OTP email. Please try again.'
+      });
+    }
 
     res.status(200).json({
       success: true,
