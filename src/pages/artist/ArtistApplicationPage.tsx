@@ -43,7 +43,8 @@ const ArtistApplicationPage = () => {
         city: '',
         state: '',
         pincode: ''
-      }
+      },
+       termsAccepted: false, 
     }
   });
 

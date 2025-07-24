@@ -25,7 +25,8 @@ const HeroSection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url("https://images.pexels.com/photos/3807871/pexels-photo-3807871.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop")',
+          backgroundImage: 'url("/hero2.jpg")',
+          backgroundPosition: 'center',
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
@@ -42,7 +43,8 @@ const HeroSection = () => {
         </p>
 
         {/* Search Bar */}
-        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl max-w-5xl mx-auto">
+        {/* <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl max-w-5xl mx-auto"> */}
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-2xl p-4 shadow-2xl max-w-3xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             {/* Search Input */}
             <div className="md:col-span-1">
@@ -53,7 +55,8 @@ const HeroSection = () => {
                   placeholder="Search artists..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800"
+                  // className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800"
+                  className="w-full text-sm pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800"
                 />
               </div>
             </div>
@@ -117,7 +120,8 @@ const HeroSection = () => {
           {/* Search Button */}
           <button 
             onClick={handleSearch}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+            // className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+            className="w-full text-sm bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
           >
             <Search size={20} />
             <span>Search Artists</span>
