@@ -1,6 +1,7 @@
 const ArtistApplication = require('../models/ArtistApplication');
 const User = require('../models/User');
 const { validationResult } = require('express-validator');
+const { sendApplicationStatusEmail } = require('../utils/emailService');
 
 // @desc    Get all artist applications
 // @route   GET /api/moderator/applications
@@ -109,6 +110,18 @@ exports.approveApplication = async (req, res) => {
       hasCompletedApplication: true
     });
 
+    // Send approval email
+    try {
+      await sendApplicationStatusEmail(
+        application.user.email,
+        application.user.firstName,
+        'approved'
+      );
+    } catch (emailError) {
+      console.error('Failed to send approval email:', emailError);
+      // Don't fail the approval if email fails
+    }
+
     await application.populate('user', 'firstName lastName email phone');
     await application.populate('reviewedBy', 'firstName lastName');
 
@@ -164,6 +177,19 @@ exports.rejectApplication = async (req, res) => {
     application.rejectionReason = reason;
     application.reviewedBy = req.user.id;
     application.reviewedAt = new Date();
+
+    // Send rejection email
+    try {
+      await sendApplicationStatusEmail(
+        application.user.email,
+        application.user.firstName,
+        'rejected',
+        reason
+      );
+    } catch (emailError) {
+      console.error('Failed to send rejection email:', emailError);
+      // Don't fail the rejection if email fails
+    }
 
     await application.save();
     await application.populate('user', 'firstName lastName email phone');

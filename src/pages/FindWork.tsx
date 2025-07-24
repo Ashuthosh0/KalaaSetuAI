@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, DollarSign, Clock, Star, Filter, Search } from 'lucide-react';
+import { ArrowLeft, MapPin, DollarSign, Clock, Star, Filter, Search, AlertCircle, CheckCircle } from 'lucide-react';
 import { jobs } from '../data/jobs';
+import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 const FindWork = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [compensationFilter, setCompensationFilter] = useState('');
+  const [applicationStatus, setApplicationStatus] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user?.role === 'artist') {
+      checkApplicationStatus();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const checkApplicationStatus = async () => {
+    try {
+      const response = await axios.get('/artist/application-status');
+      setApplicationStatus(response.data.application.status);
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        // No application found
+        setApplicationStatus('none');
+      } else {
+        console.error('Error checking application status:', error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -39,6 +69,100 @@ const FindWork = () => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600"></div>
+      </div>
+    );
+  }
+
+  // Show application status message for artists
+  if (user?.role === 'artist' && applicationStatus !== 'approved') {
+    const getStatusContent = () => {
+      switch (applicationStatus) {
+        case 'none':
+          return {
+            icon: <AlertCircle className="text-amber-500" size={64} />,
+            title: 'Complete Your Artist Application',
+            message: 'To access work opportunities, you need to complete your artist application first.',
+            actionText: 'Complete Application',
+            actionPath: '/artist-apply'
+          };
+        case 'pending':
+          return {
+            icon: <Clock className="text-yellow-500" size={64} />,
+            title: 'Application Under Review',
+            message: 'Your artist application is currently being reviewed. You\'ll be able to access opportunities once it\'s approved.',
+            actionText: 'Check Application Status',
+            actionPath: '/artist/application-status'
+          };
+        case 'rejected':
+          return {
+            icon: <AlertCircle className="text-red-500" size={64} />,
+            title: 'Application Needs Attention',
+            message: 'Your application was not approved. Please review the feedback and reapply.',
+            actionText: 'View Feedback',
+            actionPath: '/artist/application-status'
+          };
+        default:
+          return {
+            icon: <AlertCircle className="text-gray-500" size={64} />,
+            title: 'Application Required',
+            message: 'Please complete your artist application to access work opportunities.',
+            actionText: 'Apply Now',
+            actionPath: '/artist-apply'
+          };
+      }
+    };
+
+    const statusContent = getStatusContent();
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => navigate('/')}
+                className="flex items-center space-x-2 text-gray-600 hover:text-amber-600 transition-colors"
+              >
+                <ArrowLeft size={20} />
+                <span>Back to Home</span>
+              </button>
+              <div className="h-6 w-px bg-gray-300"></div>
+              <h1 className="text-2xl font-bold text-gray-900">Find Work</h1>
+            </div>
+          </div>
+        </div>
+
+        {/* Status Message */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+            <div className="mb-6">
+              {statusContent.icon}
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              {statusContent.title}
+            </h2>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              {statusContent.message}
+            </p>
+            <div className="space-y-4">
+              <button
+                onClick={() => navigate(statusContent.actionPath)}
+                className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200"
+              >
+                {statusContent.actionText}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

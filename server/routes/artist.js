@@ -3,7 +3,8 @@ const { body } = require('express-validator');
 const {
   submitApplication,
   getApplicationStatus,
-  updateApplication
+  updateApplication,
+  checkApplicationExists
 } = require('../controllers/artistController');
 const { protect, authorize, requireVerification } = require('../middleware/auth');
 const { upload, handleUploadError } = require('../middleware/upload');
@@ -56,6 +57,7 @@ router.use(authorize('artist'));
 router.use(requireVerification);
 
 // Routes
+router.get('/check-application', checkApplicationExists);
 router.post('/apply', 
   upload.single('certificate'), 
   handleUploadError,

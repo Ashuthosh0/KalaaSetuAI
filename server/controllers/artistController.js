@@ -1,7 +1,29 @@
 const ArtistApplication = require('../models/ArtistApplication');
 const User = require('../models/User');
 const { validationResult } = require('express-validator');
+const { sendApplicationStatusEmail } = require('../utils/emailService');
 const path = require('path');
+
+// @desc    Check if artist has existing application
+// @route   GET /api/artist/check-application
+// @access  Private (Artist only)
+exports.checkApplicationExists = async (req, res) => {
+  try {
+    const application = await ArtistApplication.findOne({ user: req.user.id });
+    
+    res.status(200).json({
+      success: true,
+      hasApplication: !!application,
+      status: application ? application.status : null
+    });
+  } catch (error) {
+    console.error('Check application error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while checking application'
+    });
+  }
+};
 
 // @desc    Submit artist application
 // @route   POST /api/artist/apply
@@ -23,7 +45,9 @@ exports.submitApplication = async (req, res) => {
     if (existingApplication) {
       return res.status(400).json({
         success: false,
-        message: 'You have already submitted an application'
+        message: 'You have already submitted an application. Please check your application status.',
+        hasExistingApplication: true,
+        applicationStatus: existingApplication.status
       });
     }
 

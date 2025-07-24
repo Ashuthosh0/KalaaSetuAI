@@ -15,14 +15,14 @@ const categories: Category[] = [
     id: 'dance',
     title: 'Classical Dance',
     description: 'Bharatanatyam, Kathak, Odissi, and more',
-    image: 'https://images.pexels.com/photos/2050718/pexels-photo-2050718.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'dance.png',
     count: 250
   },
   {
     id: 'music',
     title: 'Indian Classical Music',
     description: 'Vocal, Sitar, Tabla, and instruments',
-    image: 'https://images.pexels.com/photos/4472044/pexels-photo-4472044.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'music.png',
     count: 180
   },
   {
@@ -36,7 +36,7 @@ const categories: Category[] = [
     id: 'crafts',
     title: 'Traditional Crafts',
     description: 'Pottery, Painting, Textiles, and artwork',
-    image: 'https://images.pexels.com/photos/1193743/pexels-photo-1193743.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: 'art.png',
     count: 150
   }
 ];

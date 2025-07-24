@@ -57,17 +57,17 @@ function App() {
             
             {/* Artist Routes */}
             <Route path="/artist-apply" element={
-              <ProtectedRoute roles={['artist']} requireVerification={true}>
+              <ProtectedRoute roles={['artist']} requireVerification={true} requireApplication={false}>
                 <ArtistApplicationPage />
               </ProtectedRoute>
             } />
             <Route path="/artist/application-status" element={
-              <ProtectedRoute roles={['artist']} requireVerification={true}>
+              <ProtectedRoute roles={['artist']} requireVerification={true} requireApplication={false}>
                 <ApplicationStatusPage />
               </ProtectedRoute>
             } />
             <Route path="/find-work" element={
-              <ProtectedRoute roles={['artist']} requireVerification={true} requireApplication={true}>
+              <ProtectedRoute roles={['artist']} requireVerification={true} requireApplication={false}>
                 <FindWork />
               </ProtectedRoute>
             } />
