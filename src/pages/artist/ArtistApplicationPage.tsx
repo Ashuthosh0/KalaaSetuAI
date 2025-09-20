@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { Upload, FileText, CheckCircle, User, MapPin, Award, Calendar } from 'lucide-react';
+import { Upload, FileText, CheckCircle, User, MapPin, Award, Calendar, AlertCircle, Clock } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -27,6 +28,9 @@ type FormData = yup.InferType<typeof schema>;
 const ArtistApplicationPage = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasExistingApplication, setHasExistingApplication] = useState(false);
+  const [applicationStatus, setApplicationStatus] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -43,10 +47,30 @@ const ArtistApplicationPage = () => {
         city: '',
         state: '',
         pincode: ''
-      },
-       termsAccepted: false, 
+      }
     }
   });
+
+  useEffect(() => {
+    checkExistingApplication();
+  }, []);
+
+  const checkExistingApplication = async () => {
+    try {
+      const response = await axios.get('/artist/application-status');
+      if (response.data.application) {
+        setHasExistingApplication(true);
+        setApplicationStatus(response.data.application.status);
+      }
+    } catch (error: any) {
+      // If 404, user doesn't have an application yet
+      if (error.response?.status !== 404) {
+        console.error('Error checking application status:', error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const selectedCategory = watch('category');
 
@@ -94,8 +118,14 @@ const ArtistApplicationPage = () => {
       toast.success('Application submitted successfully! Please wait for approval.');
       navigate('/artist/application-status');
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Failed to submit application';
-      toast.error(message);
+      if (error.response?.data?.hasExistingApplication) {
+        setHasExistingApplication(true);
+        setApplicationStatus(error.response.data.applicationStatus);
+        toast.error('You have already submitted an application');
+      } else {
+        const message = error.response?.data?.message || 'Failed to submit application';
+        toast.error(message);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -107,6 +137,110 @@ const ArtistApplicationPage = () => {
     { value: 'yoga', label: 'Yoga & Meditation', icon: '🧘' },
     { value: 'crafts', label: 'Traditional Crafts', icon: '🎨' },
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600"></div>
+      </div>
+    );
+  }
+
+  // Show existing application status if user has already applied
+  if (hasExistingApplication) {
+    const getStatusIcon = (status: string) => {
+      switch (status) {
+        case 'pending':
+          return <Clock className="text-yellow-500" size={48} />;
+        case 'approved':
+          return <CheckCircle className="text-green-500" size={48} />;
+        case 'rejected':
+          return <AlertCircle className="text-red-500" size={48} />;
+        default:
+          return <Clock className="text-gray-500" size={48} />;
+      }
+    };
+
+    const getStatusMessage = (status: string) => {
+      switch (status) {
+        case 'pending':
+          return {
+            title: 'Application Under Review',
+            message: 'Your artist application has been submitted and is currently being reviewed by our team. We will notify you via email once a decision has been made.',
+            action: 'View Application Status',
+            actionPath: '/artist/application-status'
+          };
+        case 'approved':
+          return {
+            title: 'Application Approved!',
+            message: 'Congratulations! Your artist application has been approved. You can now browse and apply for opportunities posted by clients.',
+            action: 'Find Work Opportunities',
+            actionPath: '/find-work'
+          };
+        case 'rejected':
+          return {
+            title: 'Application Needs Revision',
+            message: 'Your application was not approved. Please check the feedback and feel free to reapply with the necessary improvements.',
+            action: 'View Feedback & Reapply',
+            actionPath: '/artist/application-status'
+          };
+        default:
+          return {
+            title: 'Application Status',
+            message: 'Please check your application status for more details.',
+            action: 'View Status',
+            actionPath: '/artist/application-status'
+          };
+      }
+    };
+
+    const statusInfo = getStatusMessage(applicationStatus || '');
+
+    return (
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="bg-gradient-to-r from-amber-600 to-amber-800 px-8 py-6">
+              <h1 className="text-3xl font-bold text-white">Artist Application</h1>
+              <p className="text-amber-100 mt-2">
+                You have already submitted your application
+              </p>
+            </div>
+
+            <div className="px-8 py-12 text-center">
+              <div className="mb-6">
+                {getStatusIcon(applicationStatus || '')}
+              </div>
+              
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                {statusInfo.title}
+              </h2>
+              
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                {statusInfo.message}
+              </p>
+
+              <div className="space-y-4">
+                <button
+                  onClick={() => navigate(statusInfo.actionPath)}
+                  className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                >
+                  {statusInfo.action}
+                </button>
+                
+                <button
+                  onClick={() => navigate('/')}
+                  className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                >
+                  Back to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
