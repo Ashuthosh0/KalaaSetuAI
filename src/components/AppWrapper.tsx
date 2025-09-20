@@ -48,10 +48,10 @@ const AppWrapper: React.FC = () => {
         } />
         
         {/* Public Routes */}
-        <Route path="/dance" element={<ArtFormPage category="dance" title="Classical Dance Artists" />} />
-        <Route path="/music" element={<ArtFormPage category="music" title="Classical Music Artists" />} />
-        <Route path="/yoga" element={<ArtFormPage category="yoga" title="Yoga & Meditation Instructors" />} />
+        <Route path="/traditional-arts" element={<ArtFormPage category="traditional-arts" title="Traditional Arts Artists" />} />
+        <Route path="/poetry" element={<ArtFormPage category="poetry" title="Poetry & Literature Artists" />} />
         <Route path="/crafts" element={<ArtFormPage category="crafts" title="Traditional Craft Artists" />} />
+        <Route path="/painting" element={<ArtFormPage category="painting" title="Traditional Painting Artists" />} />
         <Route path="/artist/:id" element={<ArtistProfile />} />
         <Route path="/all-artists" element={<AllArtists />} />
         <Route path="/blogs" element={<Blogs />} />

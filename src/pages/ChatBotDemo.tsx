@@ -15,7 +15,7 @@ const ChatBotDemo: React.FC = () => {
             <Sparkles className="text-amber-600 ml-3" size={32} />
           </div>
           <p className="text-xl text-gray-700 mb-8">
-            Experience our intelligent assistant designed to help you navigate the world of classical arts
+            Experience our intelligent assistant designed to help you navigate the world of traditional arts and poetry
           </p>
         </div>
 
@@ -25,7 +25,7 @@ const ChatBotDemo: React.FC = () => {
             <ul className="space-y-3 text-gray-700">
               <li>• Find work opportunities</li>
               <li>• Get profile optimization tips</li>
-              <li>• Learn about platform features</li>
+              <li>• Learn about traditional arts</li>
               <li>• Connect with potential clients</li>
             </ul>
           </div>
@@ -33,7 +33,7 @@ const ChatBotDemo: React.FC = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <h2 className="text-2xl font-semibold text-amber-800 mb-4">🏢 For Clients</h2>
             <ul className="space-y-3 text-gray-700">
-              <li>• Discover talented artists</li>
+              <li>• Discover traditional artists</li>
               <li>• Post requirements easily</li>
               <li>• Get hiring guidance</li>
               <li>• Manage bookings efficiently</li>
@@ -49,13 +49,13 @@ const ChatBotDemo: React.FC = () => {
                 onClick={() => showChatBot()}
                 className="w-full text-left p-4 bg-amber-50 hover:bg-amber-100 rounded-lg border border-amber-200 transition-colors"
               >
-                "How do I find artists for my wedding?"
+                "How do I find traditional artists for my event?"
               </button>
               <button
                 onClick={() => showChatBot()}
                 className="w-full text-left p-4 bg-amber-50 hover:bg-amber-100 rounded-lg border border-amber-200 transition-colors"
               >
-                "What are the different classical dance forms?"
+                "What are the different traditional art forms?"
               </button>
               <button
                 onClick={() => showChatBot()}
@@ -81,7 +81,7 @@ const ChatBotDemo: React.FC = () => {
                 onClick={() => showChatBot()}
                 className="w-full text-left p-4 bg-amber-50 hover:bg-amber-100 rounded-lg border border-amber-200 transition-colors"
               >
-                "What are the pricing options?"
+                "Tell me about traditional poetry forms"
               </button>
             </div>
           </div>

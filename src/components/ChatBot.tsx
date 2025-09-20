@@ -19,7 +19,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Namaste! I'm your KalaaSetu assistant. I can help you with finding artists, posting requirements, learning about classical arts, and navigating our platform. How can I assist you today?",
+      text: "Namaste! I'm your KalaaSetu assistant. I can help you with finding traditional artists, posting requirements, learning about traditional arts and poetry, and navigating our platform. How can I assist you today?",
       isUser: false,
       timestamp: new Date()
     }
@@ -59,12 +59,12 @@ const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
     
     // Help responses
     if (lowerMessage.includes('help') || lowerMessage.includes('what can you do')) {
-      return "I can help you with:\n\n🎭 Finding talented artists for your events\n📝 Posting your requirements as a client\n🎨 Learning about different classical art forms\n🔍 Navigating the KalaaSetu platform\n💡 Getting tips for artists and clients\n\nWhat would you like to know more about?";
+      return "I can help you with:\n\n🎨 Finding traditional artists and craftsmen\n📝 Posting your requirements as a client\n📚 Learning about traditional arts and poetry\n🔍 Navigating the KalaaSetu platform\n💡 Getting tips for artists and clients\n\nWhat would you like to know more about?";
     }
     
     // Artist finding
     if (lowerMessage.includes('find artist') || lowerMessage.includes('talent') || lowerMessage.includes('hire')) {
-      return "To find talented artists:\n\n1. Go to 'Find Talent' in the navigation\n2. Browse by categories (Music, Dance, Art)\n3. Use filters to narrow down your search\n4. View artist profiles and portfolios\n5. Contact artists directly through the platform\n\nWould you like me to guide you through any specific step?";
+      return "To find talented traditional artists:\n\n1. Go to 'Find Talent' in the navigation\n2. Browse by categories (Traditional Arts, Poetry, Crafts, Painting)\n3. Use filters to narrow down your search\n4. View artist profiles and portfolios\n5. Contact artists directly through the platform\n\nWould you like me to guide you through any specific step?";
     }
     
     // Work finding
@@ -72,9 +72,9 @@ const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
       return "To find work opportunities:\n\n1. Go to 'Find Work' in the navigation\n2. Browse available requirements\n3. Filter by your art form and location\n4. Apply to relevant opportunities\n5. Build your profile to attract clients\n\nAre you an artist looking for opportunities?";
     }
     
-    // Classical arts
-    if (lowerMessage.includes('classical') || lowerMessage.includes('art form') || lowerMessage.includes('music') || lowerMessage.includes('dance')) {
-      return "KalaaSetu celebrates various classical art forms:\n\n🎵 **Music**: Hindustani, Carnatic, Classical instruments\n💃 **Dance**: Bharatanatyam, Kathak, Odissi, Kuchipudi\n🎨 **Art**: Traditional painting, sculpture, crafts\n📚 **Literature**: Poetry, storytelling, classical texts\n\nWhich art form interests you most?";
+    // Traditional arts
+    if (lowerMessage.includes('traditional') || lowerMessage.includes('art form') || lowerMessage.includes('poetry') || lowerMessage.includes('crafts')) {
+      return "KalaaSetu celebrates various traditional art forms:\n\n🎨 **Traditional Arts**: Folk traditions, storytelling, puppetry, classical theatre\n📚 **Poetry & Literature**: Classical poetry, Urdu ghazals, Tamil literature, Hindi kavya\n🛠️ **Traditional Crafts**: Pottery, wood carving, textile weaving, handicrafts\n🎭 **Traditional Painting**: Madhubani, Miniature, Warli, Kalamkari\n\nWhich art form interests you most?";
     }
     
     // Platform features
@@ -171,9 +171,9 @@ const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
   };
 
   const quickActions = [
-    "Find Artists",
+    "Find Traditional Artists",
     "Post Requirement", 
-    "Learn About Arts",
+    "Learn About Traditional Arts",
     "Platform Features"
   ];
 
