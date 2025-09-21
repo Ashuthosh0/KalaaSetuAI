@@ -13,6 +13,7 @@ const authRoutes = require('./routes/auth');
 const artistRoutes = require('./routes/artist');
 const moderatorRoutes = require('./routes/moderator');
 const clientRoutes = require('./routes/client');
+const aiRouter = require('./routes/ai.route');
 
 // Connect to database
 connectDB();
@@ -35,7 +36,7 @@ app.use('/api/', limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: process.env.CLIENT_URL,
   credentials: true
 }));
 
@@ -51,6 +52,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/artist', artistRoutes);
 app.use('/api/moderator', moderatorRoutes);
 app.use('/api/client', clientRoutes);
+app.use('/api/ai', aiRouter);
+
 
 // Health check route
 app.get('/api/health', (req, res) => {
