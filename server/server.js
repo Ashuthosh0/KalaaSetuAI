@@ -5,8 +5,8 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 require('dotenv').config();
 
-// Import database connection
-// const connectDB = require('./config/database');
+
+const connectDB = require('./config/database');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -14,9 +14,10 @@ const artistRoutes = require('./routes/artist');
 const moderatorRoutes = require('./routes/moderator');
 const clientRoutes = require('./routes/client');
 const geminiRoutes = require('./routes/gemini');
+const { env } = require('process');
 
-// Connect to database
-// connectDB();
+
+connectDB();
 
 const app = express();
 
@@ -36,7 +37,7 @@ app.use('/api/', limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin:  process.env.CLIENT_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -95,7 +96,7 @@ app.listen(PORT, () => {
 process.on('unhandledRejection', (err, promise) => {
   console.log('Unhandled Rejection at:', promise, 'reason:', err);
   // Close server & exit process
-  // server.close(() => {
-  //   process.exit(1);
-  // });
+  server.close(() => {
+  process.exit(1);
+  });
 });
