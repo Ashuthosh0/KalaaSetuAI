@@ -5,7 +5,7 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 require('dotenv').config();
 
-// Import database connection
+
 const connectDB = require('./config/database');
 
 // Import routes
@@ -13,8 +13,13 @@ const authRoutes = require('./routes/auth');
 const artistRoutes = require('./routes/artist');
 const moderatorRoutes = require('./routes/moderator');
 const clientRoutes = require('./routes/client');
+const geminiRoutes = require('./routes/gemini');
+const { env } = require('process');
 
-// Connect to database
+
+const aiRouter = require('./routes/ai.route');
+
+
 connectDB();
 
 const app = express();
@@ -35,9 +40,14 @@ app.use('/api/', limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  credentials: true
+
+  origin:  process.env.CLIENT_URL,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+
 }));
+
 
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));
@@ -51,6 +61,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/artist', artistRoutes);
 app.use('/api/moderator', moderatorRoutes);
 app.use('/api/client', clientRoutes);
+
+app.use('/api/gemini', geminiRoutes);
+app.use('/api/ai', aiRouter);
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -91,6 +104,6 @@ process.on('unhandledRejection', (err, promise) => {
   console.log('Unhandled Rejection at:', promise, 'reason:', err);
   // Close server & exit process
   server.close(() => {
-    process.exit(1);
+  process.exit(1);
   });
 });

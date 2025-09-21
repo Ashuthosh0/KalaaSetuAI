@@ -36,10 +36,10 @@ const HeroSection = () => {
       <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
           Connect with India's
-          <span className="text-amber-300 block">Classical Art Masters</span>
+          <span className="text-amber-300 block">Traditional Art Masters</span>
         </h1>
         <p className="text-xl md:text-2xl mb-12 opacity-90 max-w-2xl mx-auto">
-          Discover talented artists in dance, music, crafts, and yoga. Find the perfect match for your artistic needs.
+          Discover talented traditional artists, craftsmen, and poets. Find the perfect match for your cultural and artistic needs.
         </p>
 
         {/* Search Bar */}
@@ -90,10 +90,10 @@ const HeroSection = () => {
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-gray-800 appearance-none"
                 >
                   <option value="">All Categories</option>
-                  <option value="dance">Classical Dance</option>
-                  <option value="music">Music</option>
-                  <option value="crafts">Crafts</option>
-                  <option value="yoga">Yoga</option>
+                  <option value="traditional-arts">Traditional Arts</option>
+                  <option value="poetry">Poetry & Literature</option>
+                  <option value="crafts">Traditional Crafts</option>
+                  <option value="painting">Traditional Painting</option>
                 </select>
               </div>
             </div>
