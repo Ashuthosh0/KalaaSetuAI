@@ -18,6 +18,7 @@ import LoginPage from '../pages/auth/LoginPage';
 import VerifyAccountPage from '../pages/auth/VerifyAccountPage';
 import ArtistApplicationPage from '../pages/artist/ArtistApplicationPage';
 import ApplicationStatusPage from '../pages/artist/ApplicationStatusPage';
+import ArtistUploadPage from '../pages/artist/ArtistUploadPage';
 import ModeratorDashboard from '../pages/moderator/ModeratorDashboard';
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 import ClientDashboard from '../pages/client/ClientDashboard';
@@ -79,6 +80,7 @@ const AppWrapper: React.FC = () => {
             <FindWork />
           </ProtectedRoute>
         } />
+        <Route path="/artist/upload-work" element={<ArtistUploadPage />} />
         
         {/* Moderator Routes */}
         <Route path="/moderator" element={

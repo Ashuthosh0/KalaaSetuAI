@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, DollarSign, Clock, Star, Filter, Search, AlertCircle, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, DollarSign, Clock, Star, Filter, Search, AlertCircle, CheckCircle, Upload } from 'lucide-react';
 import { jobs } from '../data/jobs';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
@@ -169,22 +169,29 @@ const FindWork = () => {
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => navigate('/')}
+                  className="flex items-center space-x-2 text-gray-600 hover:text-amber-600 transition-colors"
+                >
+                  <ArrowLeft size={20} />
+                  <span>Back to Home</span>
+                </button>
+                <div className="h-6 w-px bg-gray-300"></div>
+                <h1 className="text-2xl font-bold text-gray-900">Find Work</h1>
+                <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
+                  {filteredJobs.length} opportunities
+                </span>
+              </div>
               <button
-                onClick={() => navigate('/')}
-                className="flex items-center space-x-2 text-gray-600 hover:text-amber-600 transition-colors"
+                onClick={() => navigate('/artist/upload-work')}
+                className="flex items-center space-x-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
               >
-                <ArrowLeft size={20} />
-                <span>Back to Home</span>
+                <Upload size={20} />
+                <span>Upload Your Work</span>
               </button>
-              <div className="h-6 w-px bg-gray-300"></div>
-              <h1 className="text-2xl font-bold text-gray-900">Find Work</h1>
-              <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
-                {filteredJobs.length} opportunities
-              </span>
             </div>
-          </div>
         </div>
       </div>
 

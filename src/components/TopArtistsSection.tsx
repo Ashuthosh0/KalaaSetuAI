@@ -1,87 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, MapPin, ArrowRight } from 'lucide-react';
+import { artists } from '../data/artists';
 
-interface Artist {
-  id: string;
-  name: string;
-  artForm: string;
-  image: string;
-  price: number;
-  location: string;
-  rating: number;
-  reviewCount: number;
-  specialties: string[];
-}
-
-const topArtists: Artist[] = [
-  {
-    id: '1',
-    name: 'Priya Sharma',
-    artForm: 'Bharatanatyam',
-    image: 'w3.png',
-    price: 5000,
-    location: 'Chennai',
-    rating: 4.9,
-    reviewCount: 127,
-    specialties: ['Classical Dance', 'Choreography', 'Teaching']
-  },
-  {
-    id: '2',
-    name: 'Ravi Kumar',
-    artForm: 'Sitar',
-    image: 'm1.png',
-    price: 7500,
-    location: 'Mumbai',
-    rating: 4.8,
-    reviewCount: 95,
-    specialties: ['Classical Music', 'Compositions', 'Live Performance']
-  },
-  {
-    id: '3',
-    name: 'Anjali Patel',
-    artForm: 'Hatha Yoga',
-    image: 'w2.png',
-    price: 3000,
-    location: 'Rishikesh',
-    rating: 4.9,
-    reviewCount: 203,
-    specialties: ['Yoga Therapy', 'Meditation', 'Wellness']
-  },
-  {
-    id: '4',
-    name: 'Suresh Vishwakarma',
-    artForm: 'Traditional Pottery',
-    image: 'm2.png',
-    price: 4500,
-    location: 'Jaipur',
-    rating: 4.7,
-    reviewCount: 78,
-    specialties: ['Handicrafts', 'Pottery', 'Art Workshops']
-  },
-  {
-    id: '5',
-    name: 'Meera Krishnan',
-    artForm: 'Kathak',
-    image: 'w4.png',
-    price: 6000,
-    location: 'Delhi',
-    rating: 4.8,
-    reviewCount: 156,
-    specialties: ['Classical Dance', 'Cultural Events', 'Training']
-  },
-  {
-    id: '6',
-    name: 'Arjun Mishra',
-    artForm: 'Tabla',
-    image: 'm3.png',
-    price: 5500,
-    location: 'Varanasi',
-    rating: 4.9,
-    reviewCount: 112,
-    specialties: ['Percussion', 'Accompaniment', 'Solo Performance']
-  }
-];
+// Get top 6 artists by rating
+const topArtists = artists
+  .sort((a, b) => b.rating - a.rating)
+  .slice(0, 6);
 
 const TopArtistsSection = () => {
   const navigate = useNavigate();
@@ -98,7 +23,7 @@ const TopArtistsSection = () => {
             Top Rated Artists
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Meet our highest-rated artists with exceptional reviews and proven expertise in their crafts
+            Meet our highest-rated traditional artists with exceptional reviews and proven expertise in their crafts
           </p>
         </div>
 
