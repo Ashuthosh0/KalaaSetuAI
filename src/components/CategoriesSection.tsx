@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
@@ -12,31 +11,31 @@ interface Category {
 
 const categories: Category[] = [
   {
-    id: 'dance',
-    title: 'Classical Dance',
-    description: 'Bharatanatyam, Kathak, Odissi, and more',
-    image: 'dance.png',
-    count: 250
-  },
-  {
-    id: 'music',
-    title: 'Indian Classical Music',
-    description: 'Vocal, Sitar, Tabla, and instruments',
-    image: 'music.png',
+    id: 'traditional-arts',
+    title: 'Traditional Arts',
+    description: 'Classical art forms, folk traditions, and cultural expressions',
+    image: 'art.png',
     count: 180
   },
   {
-    id: 'yoga',
-    title: 'Yoga & Meditation',
-    description: 'Traditional Hatha, Ashtanga, and spiritual practices',
-    image: 'https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=800',
-    count: 320
+    id: 'poetry',
+    title: 'Poetry & Literature',
+    description: 'Classical poetry, storytelling, and literary arts',
+    image: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=800',
+    count: 120
   },
   {
     id: 'crafts',
     title: 'Traditional Crafts',
-    description: 'Pottery, Painting, Textiles, and artwork',
-    image: 'art.png',
+    description: 'Handicrafts, pottery, weaving, and traditional skills',
+    image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=800',
+    count: 200
+  },
+  {
+    id: 'painting',
+    title: 'Traditional Painting',
+    description: 'Miniature, Madhubani, Warli, and folk paintings',
+    image: 'https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&w=800',
     count: 150
   }
 ];
@@ -53,10 +52,10 @@ const CategoriesSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Explore Art Categories
+            Explore Traditional Art Categories
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover the rich diversity of Indian classical arts and find the perfect artist for your needs
+            Discover the rich diversity of traditional arts, crafts, and poetry. Find the perfect artist for your cultural needs
           </p>
         </div>
 
