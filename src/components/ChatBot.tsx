@@ -1,6 +1,8 @@
+// Gemini 2.5 Pro API integration for KalaaSetu project-specific chatbot. All responses are strictly scoped to project context.
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
 import LoadingSpinner from './LoadingSpinner';
+import axios from 'axios';
 
 interface Message {
   id: string;
@@ -14,6 +16,18 @@ interface ChatBotProps {
   isVisible: boolean;
   onToggle: () => void;
 }
+
+const getGeminiResponse = async (userMessage: string): Promise<string> => {
+  try {
+    const response = await axios.post('/api/gemini/chat', { message: userMessage });
+    if (response.data?.success && response.data?.response) {
+      return response.data.response;
+    }
+    return 'Sorry, I could not generate a response.';
+  } catch (error: any) {
+    return 'Sorry, there was an error connecting to the KalaaSetu AI backend.';
+  }
+};
 
 const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
   const [messages, setMessages] = useState<Message[]>([
@@ -52,61 +66,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
   );
 
   const generateResponse = async (userMessage: string): Promise<string> => {
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-    
-    const lowerMessage = userMessage.toLowerCase();
-    
-    // Help responses
-    if (lowerMessage.includes('help') || lowerMessage.includes('what can you do')) {
-      return "I can help you with:\n\n🎭 Finding talented artists for your events\n📝 Posting your requirements as a client\n🎨 Learning about different classical art forms\n🔍 Navigating the KalaaSetu platform\n💡 Getting tips for artists and clients\n\nWhat would you like to know more about?";
-    }
-    
-    // Artist finding
-    if (lowerMessage.includes('find artist') || lowerMessage.includes('talent') || lowerMessage.includes('hire')) {
-      return "To find talented artists:\n\n1. Go to 'Find Talent' in the navigation\n2. Browse by categories (Music, Dance, Art)\n3. Use filters to narrow down your search\n4. View artist profiles and portfolios\n5. Contact artists directly through the platform\n\nWould you like me to guide you through any specific step?";
-    }
-    
-    // Work finding
-    if (lowerMessage.includes('find work') || lowerMessage.includes('job') || lowerMessage.includes('opportunity')) {
-      return "To find work opportunities:\n\n1. Go to 'Find Work' in the navigation\n2. Browse available requirements\n3. Filter by your art form and location\n4. Apply to relevant opportunities\n5. Build your profile to attract clients\n\nAre you an artist looking for opportunities?";
-    }
-    
-    // Classical arts
-    if (lowerMessage.includes('classical') || lowerMessage.includes('art form') || lowerMessage.includes('music') || lowerMessage.includes('dance')) {
-      return "KalaaSetu celebrates various classical art forms:\n\n🎵 **Music**: Hindustani, Carnatic, Classical instruments\n💃 **Dance**: Bharatanatyam, Kathak, Odissi, Kuchipudi\n🎨 **Art**: Traditional painting, sculpture, crafts\n📚 **Literature**: Poetry, storytelling, classical texts\n\nWhich art form interests you most?";
-    }
-    
-    // Platform features
-    if (lowerMessage.includes('feature') || lowerMessage.includes('how to') || lowerMessage.includes('navigate')) {
-      return "KalaaSetu offers these key features:\n\n✨ **Smart Matching**: AI-powered artist-client matching\n📱 **Easy Communication**: Built-in messaging system\n🔒 **Secure Payments**: Safe transaction handling\n⭐ **Reviews & Ratings**: Build trust in the community\n📊 **Analytics**: Track your performance\n\nWhich feature would you like to explore?";
-    }
-    
-    // Registration/Account
-    if (lowerMessage.includes('sign up') || lowerMessage.includes('register') || lowerMessage.includes('account')) {
-      return "To create your account:\n\n1. Click 'Sign Up' in the top navigation\n2. Choose your role (Artist or Client)\n3. Fill in your details\n4. Verify your email with OTP\n5. Complete your profile\n\nWould you like help with any specific step?";
-    }
-    
-    // Pricing/Payment
-    if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('payment')) {
-      return "KalaaSetu offers flexible pricing:\n\n🆓 **Free**: Basic profile and browsing\n💎 **Premium**: Enhanced visibility and features\n🏢 **Enterprise**: Custom solutions for organizations\n\nContact our support team for detailed pricing information!";
-    }
-    
-    // Contact/Support
-    if (lowerMessage.includes('contact') || lowerMessage.includes('support') || lowerMessage.includes('help me')) {
-      return "I'm here to help! You can also:\n\n📧 Email: support@kalaasetu.com\n📞 Phone: +91-XXXX-XXXX\n💬 Live Chat: Available 9 AM - 6 PM IST\n📖 Help Center: Check our FAQ section\n\nWhat specific issue can I help you with?";
-    }
-    
-    // Default response
-    const responses = [
-      "That's an interesting question! Let me help you with that. Could you provide more details about what you're looking for?",
-      "I'd be happy to assist you with that! Can you tell me more about your specific needs?",
-      "Great question! To give you the best answer, could you share a bit more context?",
-      "I'm here to help! Could you elaborate on what you'd like to know more about?",
-      "That's something I can definitely help with! What specific information are you looking for?"
-    ];
-    
-    return responses[Math.floor(Math.random() * responses.length)];
+    return await getGeminiResponse(userMessage);
   };
 
   const handleSendMessage = async () => {
@@ -136,7 +96,6 @@ const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
 
     try {
       const response = await generateResponse(userMessage.text);
-      
       // Remove loading message and add actual response
       setMessages(prev => {
         const withoutLoading = prev.filter(msg => msg.id !== loadingMessage.id);
@@ -189,7 +148,6 @@ const ChatBot: React.FC<ChatBotProps> = ({ isVisible, onToggle }) => {
           {/* Pulse animation ring */}
           <div className="absolute inset-0 bg-amber-400 rounded-full animate-ping opacity-20"></div>
           <div className="absolute inset-0 bg-amber-500 rounded-full animate-pulse opacity-30"></div>
-          
           <button
             onClick={onToggle}
             className="relative bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group"

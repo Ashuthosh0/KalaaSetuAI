@@ -87,6 +87,10 @@ const ChatBotDemo: React.FC = () => {
           </div>
         </div>
 
+        <div className="text-center mb-4">
+          <span className="text-xs text-gray-500">Powered by Gemini 2.5 Pro – Answers are strictly limited to KalaaSetu project topics.</span>
+        </div>
+
         <div className="text-center">
           <button
             onClick={showChatBot}
