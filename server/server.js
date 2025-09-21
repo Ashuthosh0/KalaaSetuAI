@@ -17,6 +17,9 @@ const geminiRoutes = require('./routes/gemini');
 const { env } = require('process');
 
 
+const aiRouter = require('./routes/ai.route');
+
+
 connectDB();
 
 const app = express();
@@ -37,10 +40,12 @@ app.use('/api/', limiter);
 
 // CORS configuration
 app.use(cors({
+
   origin:  process.env.CLIENT_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
+
 }));
 
 
@@ -56,7 +61,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/artist', artistRoutes);
 app.use('/api/moderator', moderatorRoutes);
 app.use('/api/client', clientRoutes);
+
 app.use('/api/gemini', geminiRoutes);
+app.use('/api/ai', aiRouter);
 
 // Health check route
 app.get('/api/health', (req, res) => {
